@@ -1,31 +1,32 @@
 from django.db import models
 
-class Subject(models.Model):
-    name = models.CharField(max_length=100)
-    description = models.TextField(blank=True, null=True)
+# Create your models here.
 
-    def __str__(self):
-        return self.name
+class Subject(models.Model):
+    subject = models.CharField(max_length=20)
+
 
 class Teacher(models.Model):
-    first_name = models.CharField(max_length=100)
-    last_name = models.CharField(max_length=100)
-    subjects = models.ForeignKey(Subject, on_delete=models.CASCADE)
+    name = models.TextField()
+    surname = models.TextField()
+    subject = models.ForeignKey(Subject, on_delete=models.DO_NOTHING)
 
-    def __str__(self):
-        return f"{self.first_name} {self.last_name}"
 
 class Class(models.Model):
-    name = models.CharField(max_length=100)
-    year = models.IntegerField()
+    num_class = models.CharField(max_length=10)
 
-    def __str__(self):
-        return self.name
 
 class Student(models.Model):
-    first_name = models.CharField(max_length=100)
-    last_name = models.CharField(max_length=100)
-    student_class = models.ForeignKey(Class, on_delete=models.CASCADE)
+    full_name = models.ForeignKey(Class, on_delete=models.DO_NOTHING)
 
-    def __str__(self):
-        return f"{self.first_name} {self.last_name}"
+
+class Schedule(models.Model):
+    subject = models.ForeignKey(Subject, on_delete=models.DO_NOTHING)
+    teacher = models.ForeignKey(Teacher, on_delete=models.DO_NOTHING)
+    clas = models.ForeignKey(Class, on_delete=models.DO_NOTHING)
+
+class Grade(models.Model):
+    grade = models.IntegerField()
+    teacher = models.ForeignKey(Teacher, on_delete=models.DO_NOTHING)
+    subject = models.ForeignKey(Subject, on_delete=models.DO_NOTHING)
+    student = models.ForeignKey(Student, on_delete=models.DO_NOTHING)
